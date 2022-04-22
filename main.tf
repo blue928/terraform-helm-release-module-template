@@ -17,7 +17,7 @@ resource "helm_release" "ingress_nginx" {
   #values = [file("nginx_ingress_values.yaml")]
 
   dynamic "set" {
-    for_each = local.ingress_rules
+    for_each = local.yaml_values
     content {
       name = "${set.value.name}"
       value = "${set.value.value}"

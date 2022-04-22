@@ -47,7 +47,7 @@ variable "chart_timeout" {
 # We're using Locals here instead of variables because sometimes the values need to be dynamically
 # set. Locals support interpolation where variables do not.
 locals {
-   ingress_rules = [{
+   yaml_values = [{
       name        = "controller.replicaCount"
       value = "2"
    },
@@ -57,6 +57,6 @@ locals {
    },
    {
       name        = "controller.service.loadBalancerIP"
-      value = "var.lb_public_ip"
+      value = ""
    }]
 }
