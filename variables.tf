@@ -34,14 +34,14 @@ variable "chart_timeout" {
   default = "1500"
 }
 
-variable "set_yaml_values" {
+/*variable "set_yaml_values" {
   type = map
     default = {
         "controller.replicaCount" = "2",
         "controller.service.externalTrafficPolicy" = "Local",
         "controller.service.loadBalancerIP" = "var.lb_public_ip",
     }
-}
+}*/
   
 
 # We're using Locals here instead of variables because sometimes the values need to be dynamically

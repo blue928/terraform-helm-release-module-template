@@ -18,7 +18,7 @@ resource "helm_release" "ingress_nginx" {
 
   dynamic "set" {
     for_each = local.ingress_rules
-    content = {
+    content {
       name = "${set.value.name}"
       value = "${set.value.value}"
     }
