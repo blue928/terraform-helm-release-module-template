@@ -1,32 +1,26 @@
+resource "kubernetes_namespace_v1" "helm_app_namespace" {
+  metadata {
+    name = var.chart_namespace
+  }
+  
+}
 resource "helm_release" "ingress_nginx" {
-  name       = "ingress-nginx"
-  repository = "https://kubernetes.github.io/ingress-nginx"
-  chart      = "ingress-nginx"
+  name       = var.name
+  repository = var.chart_repository
+  chart      = var.chart_name
   version = var.chart_version
 
   # todo change this to a variable
-  namespace        = "ingress-nginx"
-  create_namespace = true
-  timeout          = 1500
-  #atomic  = true
-  #cleanup_on_fail = true
+  namespace        = kubernetes_namespace_v1.helm_app_namespace.metadata[0].name
+  timeout          = var.chart_timeout
 
   #values = [file("nginx_ingress_values.yaml")]
 
-  set {
-    name  = "controller.replicaCount"
-    value = "2"
+  dynamic "set" {
+    for_each = local.ingress_rules
+    content = {
+      name = "${set.value.name}"
+      value = "${set.value.value}"
+    }
   }
-
-  set {
-    name  = "controller.service.externalTrafficPolicy"
-    value = "Local"
-  }
-
-  #set {
-    #name = "controller.service.loadBalancerIP"
-    #value = azurerm_public_ip.lb_public_ip.ip_address
-    #value = module.aks-cluster.lb_public_ip
-    #value = "var.lb_public_ip"
-  #}
 }
